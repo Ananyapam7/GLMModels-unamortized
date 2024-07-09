@@ -136,4 +136,23 @@ if __name__ == '__main__':
     print(Y)
     # # Fit the model
     model = BinomialGLMM(Y=Y.numpy(), X=X.numpy(), K=2) # K is the number of latent factors
-    model.train(max_iter=500, lr= 0.001, optimizer = 'Adam', weights=True, nn_model=[10, 10])
+    model.train(max_iter=500, lr= 0.001, optimizer = 'Adam')
+
+    # Print MSE for each parameter
+    print("Mean Squared Error for sigma: ", torch.mean((model.sigma - sigma)**2).item())
+    print("Mean Squared Error for mu: ", torch.mean((model.mu - mu)**2).item())
+    print("Mean Squared Error for B: ", torch.mean((model.B - B)**2).item())
+
+    # Print the time taken for training
+    print("Time taken: ", model.time_taken)
+    print("ELBO: ", model.elbo.item())
+    print("-------------------------")
+    print("Model Parameters")
+    print(model.mu)
+    print(model.sigma)
+    print(model.B)
+    print("-------------------------")
+    print("Eta and Lambda")
+    print("Eta: ", model.eta)
+    print("Lambda: ", torch.exp(model.log_lamda))
+    print("-------------------------")
